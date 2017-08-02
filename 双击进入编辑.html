@@ -9,31 +9,27 @@
 	 
 	 $scope.replace = function($event,dataObj,name){
 		
-	    var obj = $event.target;
-		var table1 = document.getElementsByClassName("table1")[0];
-		var allInput = table1.getElementsByTagName("input");
-		var len = allInput.length;
+		var obj = $event.target;			
+			
+		if(obj.nodeName=='SPAN'){
+				
+			//转换成输入框
+			var input = document.createElement("input");
+			input.value = obj.innerHTML;
+			
+			obj.parentNode.replaceChild(input,obj);
+			input.focus();
+			
+			input.onblur = function(){
+			   obj.innerHTML = input.value;
+			   dataObj[name] = angular.isNumber(dataObj[name])?parseInt(input.value):input.value;
+			   input.parentNode.replaceChild(obj,input);
+			   console.table($scope.data);
+			};
 		
-		if(len!=0){
-		    for(var i=0;i<len;i++){
-				var tempSpan = document.createElement("span");
-				 tempSpan.innerHTML = allInput[i].value;
-			     allInput[i].parentNode.replaceChild(tempSpan,allInput[i]);
-			}
 		}
-		
 						
-		//转换成输入框
-	    var input = document.createElement("input");
-		input.value = obj.innerHTML;
-		obj.parentNode.replaceChild(input,obj);
 		
-		input.onblur = function(){
-		   obj.innerHTML = input.value;
-		   dataObj[name] = angular.isNumber(dataObj[name])?parseInt(input.value):input.value;
-		   input.parentNode.replaceChild(obj,input);
-		   console.table($scope.data);
-		};
 		
 	 };
    });
@@ -42,13 +38,12 @@
    table td{
       width:200px;
 	  border:1px solid #ccc;
+	  text-align:center;
    }
    table td span{
       display:block;
-	  border:1px solid red;
 	  width:100%;
 	  height:100%;
-	  text-align:center;
    }
    table{
       border-collapse:collapse;
