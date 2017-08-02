@@ -1,0 +1,48 @@
+﻿<!DOCTYPE>
+<html ng-app="test">
+<head>
+<script src="http://lib.sinaapp.com/js/angular.js/angular-1.2.19/angular.min.js"></script>
+<script>
+   angular.module('test',[]).controller('testController',function($scope){
+      $scope.testArray = [{name:"1",num:{value:1}},{name:"2",num:{value:2}},{name:"3",num:{value:3}},{name:"4",num:{value:4}}];
+	  $scope.total = 0;
+	  $scope.temp = {};
+	  $scope.warnInfo = "";
+	  
+	  $scope.check = function(value){
+	    var regNum = /^[1-9]\d*$/;
+		
+		if(!regNum.test(value)){
+		   $scope.warnInfo = "请输入合法的数字！";
+           return false;
+		}
+		else
+		{
+		      $scope.warnInfo = "";
+			  $scope.add();
+		}
+	  };
+	  
+	  $scope.add = function(){
+	  $scope.total = 0;
+	   for(var i=0;i<$scope.testArray.length;i++){
+          //console.log($scope.testArray[i].num.value);
+		  $scope.total += Number($scope.testArray[i].num.value);
+	  }
+	  };
+	  
+	  $scope.add();
+	 
+   });
+</script>
+</head>
+<body>
+<div ng-controller="testController">
+<div ng-repeat="item in testArray">
+  <input type="text" ng-model="item.num.value" ng-blur="check(item.num.value)" ng-change = "check(item.num.value)"/>
+</div>  
+<span>{{warnInfo}}</span>
+total:<span>{{total}}</span>
+</div>
+</body>
+</html>
